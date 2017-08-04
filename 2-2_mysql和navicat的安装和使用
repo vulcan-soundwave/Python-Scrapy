@@ -1,0 +1,27 @@
+# mysql和navicat的安装和使用
+
+1、mysql的安装(基于CentOS)
+
+$ sudo yum install mysql-server
+[sudo] password for soundwave: 
+已加载插件：fastestmirror, langpacks
+Loading mirror speeds from cached hostfile
+ * base: mirrors.btte.net
+ * epel: mirrors.tuna.tsinghua.edu.cn
+ * extras: ftp.sjtu.edu.cn
+ * nux-dextop: mirror.li.nux.ro
+ * remi-safe: mirrors.tuna.tsinghua.edu.cn
+ * rpmforge: mirrors.neusoft.edu.cn
+ * rpmfusion-free-updates: ftp.sjtu.edu.cn
+ * updates: mirrors.btte.net
+没有可用软件包 mysql-server。
+错误：无须任何处理
+
+尽管安装了很多第三方yum源，但是很遗憾没有mysql的安装包
+只好手动添加mysql的repo源
+$ wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+$ sudo rpm -ivh mysql-community-release-el7-5.noarch.rpm
+$ sudo yum install mysql-server
+
+按照步骤安装完成后，密码为随即密码，需要重置密码：
+

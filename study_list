@@ -1,0 +1,157 @@
+ python分布式爬虫打造搜索引擎--------scrapy实现
+
+最近在网上学习一门关于scrapy爬虫的课程，觉得还不错，以下是目录还在更新中，我觉得有必要好好的做下笔记，研究研究。
+
+第1章 课程介绍
+
+     1-1 python分布式爬虫打造搜索引擎简介 07:23 
+
+第2章 搭建开发环境
+	IDE -- pycharm
+	数据库 -- mysql、redis、elasticsearch
+	开发环境 -- virtualenv
+
+     2-1 pycharm的安装和简单使用 10:27 
+     2-2 mysql和navicat的安装和使用 16:20 
+     2-3 windows和linux下安装python2和python3 06:49 
+     2-4 虚拟环境的安装和配置 30:53 
+
+第3章 爬虫基础知识回顾
+
+     3-1 技术选型 爬虫能做什么 09:50 
+     3-2 正则表达式-1 18:31 
+     3-3 正则表达式-2 19:04 
+     3-4 正则表达式-3 20:16 
+     3-5 深度优先和广度优先原理 25:15 
+     3-6 url去重方法 07:44 
+     3-7 彻底搞清楚unicode和utf8编码 18:31 
+
+第4章 scrapy爬取知名技术文章网站（伯乐在线实战）
+
+     4-1 scrapy安装以及目录结构介绍 22:33 
+     4-2 pycharm 调试scrapy 执行流程 12:35 
+     4-3 xpath的用法 - 1 22:17 
+     4-4 xpath的用法 - 2 19:00 
+     4-5 xpath的用法 - 3 21:22 
+     4-6 css选择器实现字段解析 - 1 17:21 
+     4-7 css选择器实现字段解析 - 2 16:31 
+     4-8 编写spider爬取jobbole的所有文章 - 1 15:40 
+     4-9 编写spider爬取jobbole的所有文章 - 2 09:45 
+     4-10 items设计 - 1 14:49 
+     4-11 items设计 - 2 15:45 
+     4-12 items设计 - 3 17:05 
+     4-13 数据表设计和保存item到json文件 18:17 
+     4-14 通过pipeline保存数据到mysql - 1 18:41 
+     4-15 通过pipeline保存数据到mysql - 2 17:58 
+     4-16 scrapy item loader机制 - 1 17:26 
+     4-17 scrapy item loader机制- 2 20:31 
+
+第5章 scrapy爬取知名问答网站（知乎实战）
+
+     5-1 session和cookie自动登录机制 20:10 
+     5-2 requests模拟登陆知乎 - 1 13:32 
+     5-3 requests模拟登陆知乎 - 2 13:16 
+     5-4 requests模拟登陆知乎 - 3 12:21 
+     5-5 scrapy模拟知乎登录 20:46 
+     5-6 知乎分析以及数据表设计1 15:17 
+     5-7 知乎分析以及数据表设计 - 2 13:35 
+     5-8 item loder方式提取question - 1 14:57 
+     5-9 item loder方式提取question - 2 15:20 
+     5-10 item loder方式提取question - 3 06:45 
+     5-11 知乎spider爬虫逻辑的实现以及answer的提取 - 1 15:54 
+     5-12 知乎spider爬虫逻辑的实现以及answer的提取 - 2 17:04 
+     5-13 保存数据到mysql中 -1 17:27 
+     5-14 保存数据到mysql中 -2 17:22 
+     5-15 保存数据到mysql中 -3 16:09 
+     5-16 (补充小节)知乎验证码登录 - 1_1 16:41 
+     5-17 (补充小节)知乎验证码登录 - 2_1 10:32 
+
+第6章 通过CrawlSpider对招聘网站进行整站爬取（拉勾网实战）
+
+     6-1 数据表结构设计 15:33 
+     6-2 CrawlSpider源码分析-新建CrawlSpider与settings配置 12:50 
+     6-3 CrawlSpider源码分析 25:29 
+     6-4 Rule和LinkExtractor使用 14:28 
+     6-5 item loader方式解析职位 24:46 
+     6-6 职位数据入库-1 19:01 
+     6-7 职位信息入库-2 11:19 
+
+第7章 Scrapy突破反爬虫的限制（拉勾网实战）
+
+     7-1 爬虫和反爬的对抗过程以及策略 20:17 
+     7-2 scrapy架构源码分析 10:45 
+     7-3 Requests和Response介绍 10:18 
+     7-4 通过downloadmiddleware随机更换user-agent-1 17:00 
+     7-5 通过downloadmiddleware随机更换user-agent - 2 17:13 
+     7-6 scrapy实现ip代理池 - 1 16:51 
+     7-7 scrapy实现ip代理池 - 2 17:39 
+     7-8 scrapy实现ip代理池 - 3 18:46 
+     7-9 云打码实现验证码识别 22:37 
+     7-10 cookie禁用、自动限速、自定义spider的settings 07:22 
+
+第8章 scrapy进阶开发
+
+     8-1 selenium动态网页请求与模拟登录知乎 21:24 
+     8-2 selenium模拟登录微博， 模拟鼠标下拉 11:06 
+     8-3 chromedriver不加载图片、phantomjs获取动态网页 09:59 
+     8-4 selenium集成到scrapy中 19:43 
+     8-5 其余动态网页获取技术介绍-chrome无界面运行、scrapy-splash、selenium-grid, splinter 07:50 
+     8-6 scrapy的暂停与重启 12:58 
+     8-7 scrapy url去重原理 05:45 
+     8-8 scrapy telnet服务 07:37 
+     8-9 spider middleware 详解 15:25 
+     8-10 scrapy的数据收集 13:44 
+     8-11 scrapy信号详解 13:05 
+     8-12 scrapy扩展开发 13:16 
+
+第9章 scrapy-redis分布式爬虫（实战项目）
+
+     9-1 分布式爬虫要点 08:39 
+     9-2 redis基础知识 - 1 20:31 
+     9-3 redis基础知识 - 2 15:58 
+     9-4 scrapy-redis编写分布式爬虫代码 21:06 
+     9-5 scrapy源码解析-connection.py、defaults.py- 11:05 
+     9-6 scrapy-redis源码剖析-dupefilter.py- 05:29 
+     9-7 scrapy-redis源码剖析- pipelines.py、 queue.py- 10:41 
+     9-8 scrapy-redis源码分析- scheduler.py、spider.py- 11:52 
+     9-9 集成bloomfilter到scrapy-redis中 19:30 
+
+第10章 elasticsearch搜索引擎的使用
+
+从本章开始基本是搜索引擎的知识，与我学习scrapy没多大关系，所以就不记录笔记了，以后有兴趣了再继续记笔记学习。
+
+     10-1 elasticsearch介绍 18:21 
+     10-2 elasticsearch安装 13:24 
+     10-3 elasticsearch-head插件以及kibana的安装 24:09 
+     10-4 elasticsearch的基本概念 12:15 
+     10-5 倒排索引 11:24 
+     10-6 elasticsearch 基本的索引和文档CRUD操作 18:44 
+     10-7 elasticsearch的mget和bulk批量操作 12:36 
+     10-8 elasticsearch的mapping映射管理 21:03 
+     10-9 elasticsearch的简单查询 - 1 14:56 
+     10-10 elasticsearch的简单查询 - 2 11:12 
+     10-11 elasticsearch的bool组合查询 22:58 
+     10-12 scrapy写入数据到elasticsearch中 - 1 14:16 
+     10-13 scrapy写入数据到elasticsearch中 - 2 11:15 
+
+第11章 django搭建搜索网站
+
+     11-1 es完成搜索建议-搜索建议字段保存 - 1 13:45 
+     11-2 es完成搜索建议-搜索建议字段保存 - 2 13:34 
+     11-3 django实现elasticsearch的搜索建议 - 1 19:57 
+     11-4 django实现elasticsearch的搜索建议 - 2 18:15 
+     11-5 django实现elasticsearch的搜索功能 -1 14:06 
+     11-6 django实现elasticsearch的搜索功能 -2 13:14 
+     11-7 django实现搜索结果分页 09:12 
+     11-8 搜索记录、热门搜索功能实现 - 1 14:34 
+     11-9 搜索记录、热门搜索功能实现 - 2 14:04 
+
+第12章 scrapyd部署scrapy爬虫
+
+     12-1 scrapyd部署scrapy项目 24:39 
+
+第13章 课程总结
+
+     13-1 课程总结 05:55
+
+
