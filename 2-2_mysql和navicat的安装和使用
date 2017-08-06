@@ -2,6 +2,10 @@
 
 1、mysql的安装(基于CentOS)
 
+
+
+$ sudo yum install mysql
+$ sudo yum install mysql-devel
 $ sudo yum install mysql-server
 [sudo] password for soundwave: 
 已加载插件：fastestmirror, langpacks
@@ -17,11 +21,317 @@ Loading mirror speeds from cached hostfile
 没有可用软件包 mysql-server。
 错误：无须任何处理
 
-尽管安装了很多第三方yum源，但是很遗憾没有mysql的安装包
-只好手动添加mysql的repo源
+安装mysql和mysql-devel都成功了，但是安装mysql-server失败了
+这是因为CentOS 7 版本将MySQL数据库软件从默认的程序列表中移除，用mariadb代替了
+方法一：安装mariadb
+MariaDB数据库管理系统是MySQL的一个分支，主要由开源社区在维护，采用GPL授权许可。开发这个分支的原因之一是：甲骨文公司收购了MySQL后，有将MySQL闭源的潜在风险，因此社区采用分支的方式来避开这个风险。MariaDB的目的是完全兼容MySQL，包括API和命令行，使之能轻松成为MySQL的代替品。
+$ yum install mariadb-server mariadb
+mariadb数据库的相关命令是：
+$ systemctl start mariadb  #启动MariaDB
+$ systemctl stop mariadb  #停止MariaDB
+$ systemctl restart mariadb  #重启MariaDB
+$ systemctl enable mariadb  #设置开机启动
+所以先启动数据库
+$ systemctl start mariadb
+然后就可以正常使用mysql了
+
+$  mysql -u root -p
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 3
+Server version: 5.5.41-MariaDB MariaDB Server
+
+Copyright (c) 2000, 2014, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| test               |
++--------------------+
+4 rows in set (0.00 sec)
+
+MariaDB [(none)]> 
+
+安装mariadb后显示的也是 MariaDB [(none)]> ，可能看起来有点不习惯。
+
+方法二：手动添加mysql的repo源
 $ wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
 $ sudo rpm -ivh mysql-community-release-el7-5.noarch.rpm
 $ sudo yum install mysql-server
 
-按照步骤安装完成后，密码为随即密码，需要重置密码：
+$ service mysqld restart
+Redirecting to /bin/systemctl restart  mysqld.service
+Job for mysqld.service failed because a timeout was exceeded. See "systemctl status mysqld.service" and "journalctl -xe" for details.
+出现错误
+
+删干净mysql相关包后，重新载入repo源
+删除：
+$ rpm -qa|grep -i mysql
+mysql-community-common-5.6.37-2.el7.x86_64
+mysql-community-devel-5.6.37-2.el7.x86_64
+mysql-community-release-el7-5.noarch
+mysql-community-libs-5.6.37-2.el7.x86_64
+$ yum remove mysql mysql-server mysql-libs compat-mysql51
+已加载插件：fastestmirror, langpacks
+参数 mysql 没有匹配
+参数 mysql-server 没有匹配
+参数 compat-mysql51 没有匹配
+正在解决依赖关系
+--> 正在检查事务
+---> 软件包 mysql-community-libs.x86_64.0.5.6.37-2.el7 将被 删除
+--> 正在处理依赖关系 libmysqlclient.so.18()(64bit)，它被软件包 mysql-community-devel-5.6.37-2.el7.x86_64 需要
+--> 正在处理依赖关系 libmysqlclient.so.18()(64bit)，它被软件包 2:postfix-2.10.1-6.el7.x86_64 需要
+--> 正在处理依赖关系 libmysqlclient.so.18(libmysqlclient_18)(64bit)，它被软件包 2:postfix-2.10.1-6.el7.x86_64 需要
+--> 正在处理依赖关系 mysql-community-libs(x86-64) >= 5.6.10，它被软件包 mysql-community-devel-5.6.37-2.el7.x86_64 需要
+--> 正在检查事务
+---> 软件包 mysql-community-devel.x86_64.0.5.6.37-2.el7 将被 删除
+---> 软件包 postfix.x86_64.2.2.10.1-6.el7 将被 删除
+--> 解决依赖关系完成
+
+依赖关系解决
+
+==================================================================
+ Package           架构   版本           源                  大小
+==================================================================
+正在删除:
+ mysql-community-libs
+                   x86_64 5.6.37-2.el7   @mysql56-community 9.2 M
+为依赖而移除:
+ mysql-community-devel
+                   x86_64 5.6.37-2.el7   @mysql56-community  21 M
+ postfix           x86_64 2:2.10.1-6.el7 @anaconda           12 M
+
+事务概要
+==================================================================
+移除  1 软件包 (+2 依赖软件包)
+
+安装大小：42 M
+是否继续？[y/N]：y
+Downloading packages:
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  正在删除    : mysql-community-devel-5.6.37-2.el7.x86_64     1/3 
+  正在删除    : 2:postfix-2.10.1-6.el7.x86_64                 2/3 
+  正在删除    : mysql-community-libs-5.6.37-2.el7.x86_64      3/3 
+  验证中      : mysql-community-libs-5.6.37-2.el7.x86_64      1/3 
+  验证中      : mysql-community-devel-5.6.37-2.el7.x86_64     2/3 
+  验证中      : 2:postfix-2.10.1-6.el7.x86_64                 3/3 
+
+删除:
+  mysql-community-libs.x86_64 0:5.6.37-2.el7                      
+
+作为依赖被删除:
+  mysql-community-devel.x86_64 0:5.6.37-2.el7                     
+  postfix.x86_64 2:2.10.1-6.el7                                   
+
+完毕！
+
+$ rpm -qa|grep -i mysql
+mysql-community-common-5.6.37-2.el7.x86_64
+mysql-community-release-el7-5.noarch
+$ rpm -e mysql-community-common-5.6.37-2.el7.x86_64
+$ rpm -e mysql-community-release-el7-5.noarch
+$ whereis mysql
+mysql: /usr/share/mysql
+$ rm -rf /usr/share/mysql/
+$ rm -rf /usr/my.cnf
+$ rm -rf /root/.mysql_sercret
+
+注:删除MySQL数据库目录(关键) ，否则password不更新（默认安装，如果自定义安装路径和链接路径ln -s ……请删除。）
+rm -rf /var/lib/mysql
+
+重新载入repo源：
+$ wget https://repo.mysql.com//mysql57-community-release-el7-11.noarch.rpm
+$ rpm -Uvh mysql57-community-release-el7-11.noarch.rpm
+准备中...                                                         ################################# [100%]
+正在升级/安装...
+   1:mysql57-community-release-el7-11                             ################################# [100%]
+
+ more mysql-community.repo 
+[mysql-connectors-community]
+name=MySQL Connectors Community
+baseurl=http://repo.mysql.com/yum/mysql-connectors-community/el/7/
+$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+
+[mysql-tools-community]
+name=MySQL Tools Community
+baseurl=http://repo.mysql.com/yum/mysql-tools-community/el/7/$base
+arch/
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+
+# Enable to use MySQL 5.5
+[mysql55-community]
+name=MySQL 5.5 Community Server
+baseurl=http://repo.mysql.com/yum/mysql-5.5-community/el/7/$basear
+ch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+
+# Enable to use MySQL 5.6
+[mysql56-community]
+name=MySQL 5.6 Community Server
+baseurl=http://repo.mysql.com/yum/mysql-5.6-community/el/7/$basear
+ch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+
+[mysql57-community]
+name=MySQL 5.7 Community Server
+baseurl=http://repo.mysql.com/yum/mysql-5.7-community/el/7/$basear
+ch/
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+
+[mysql80-community]
+name=MySQL 8.0 Community Server
+baseurl=http://repo.mysql.com/yum/mysql-8.0-community/el/7/$basear
+ch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+
+[mysql-tools-preview]
+name=MySQL Tools Preview
+baseurl=http://repo.mysql.com/yum/mysql-tools-preview/el/7/$basear
+ch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+
+[mysql-cluster-7.5-community]
+name=MySQL Cluster 7.5 Community
+baseurl=http://repo.mysql.com/yum/mysql-cluster-7.5-community/el/7
+/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+
+[mysql-cluster-7.6-community]
+name=MySQL Cluster 7.6 Community
+baseurl=http://repo.mysql.com/yum/mysql-cluster-7.6-community/el/7
+/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+
+按照官网的说法，在这个文件中你可以配置你想要安装的mysql版本，如果需要安装这个版本就设置enabled=1,不需要的版本就把它设置为0。这里我安装5.7的版本
+
+$ yum install mysql-community-server
+已加载插件：fastestmirror, langpacks
+mysql57-community                          | 2.5 kB     00:00     
+mysql57-community/x86_64/primary_db          | 116 kB   00:00     
+Loading mirror speeds from cached hostfile
+ * base: mirrors.btte.net
+ * epel: mirrors.neusoft.edu.cn
+ * extras: mirrors.btte.net
+ * nux-dextop: mirror.li.nux.ro
+ * remi-safe: mirrors.tuna.tsinghua.edu.cn
+ * rpmforge: mirrors.neusoft.edu.cn
+ * rpmfusion-free-updates: ftp.sjtu.edu.cn
+ * updates: ftp.sjtu.edu.cn
+正在解决依赖关系
+--> 正在检查事务
+---> 软件包 mysql-community-server.x86_64.0.5.7.19-1.el7 将被 安装
+--> 正在处理依赖关系 mysql-community-common(x86-64) = 5.7.19-1.el7，它被软件包 mysql-community-server-5.7.19-1.el7.x86_64 需要
+--> 正在处理依赖关系 mysql-community-client(x86-64) >= 5.7.9，它被软件包 mysql-community-server-5.7.19-1.el7.x86_64 需要
+--> 正在检查事务
+---> 软件包 mysql-community-client.x86_64.0.5.7.19-1.el7 将被 安装
+--> 正在处理依赖关系 mysql-community-libs(x86-64) >= 5.7.9，它被软件包 mysql-community-client-5.7.19-1.el7.x86_64 需要
+---> 软件包 mysql-community-common.x86_64.0.5.7.19-1.el7 将被 安装
+--> 正在检查事务
+---> 软件包 mysql-community-libs.x86_64.0.5.7.19-1.el7 将被 安装
+--> 解决依赖关系完成
+
+依赖关系解决
+
+==================================================================
+ Package              架构   版本         源                 大小
+==================================================================
+正在安装:
+ mysql-community-server
+                      x86_64 5.7.19-1.el7 mysql57-community 164 M
+为依赖而安装:
+ mysql-community-client
+                      x86_64 5.7.19-1.el7 mysql57-community  24 M
+ mysql-community-common
+                      x86_64 5.7.19-1.el7 mysql57-community 272 k
+ mysql-community-libs x86_64 5.7.19-1.el7 mysql57-community 2.1 M
+
+事务概要
+==================================================================
+安装  1 软件包 (+3 依赖软件包)
+
+总下载量：190 M
+安装大小：856 M
+Is this ok [y/d/N]: y
+Downloading packages:
+(1/4): mysql-community-common-5.7.19-1.el7.x | 272 kB   00:00     
+(2/4): mysql-community-libs-5.7.19-1.el7.x86 | 2.1 MB   00:00     
+(3/4): mysql-community-client-5.7.19-1.el7.x |  24 MB   00:08     
+(4/4): mysql-community-server-5.7.19-1.el7.x | 164 MB   00:45     
+------------------------------------------------------------------
+总计                                 4.1 MB/s | 190 MB  00:46     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+警告：RPM 数据库已被非 yum 程序修改。
+** 发现 3 个已存在的 RPM 数据库问题， 'yum check' 输出如下：
+ipa-client-4.4.0-14.el7.centos.7.x86_64 有已安装冲突 freeipa-client: ipa-client-4.4.0-14.el7.centos.7.x86_64
+ipa-client-common-4.4.0-14.el7.centos.7.noarch 有已安装冲突 freeipa-client-common: ipa-client-common-4.4.0-14.el7.centos.7.noarch
+ipa-common-4.4.0-14.el7.centos.7.noarch 有已安装冲突 freeipa-common: ipa-common-4.4.0-14.el7.centos.7.noarch
+  正在安装    : mysql-community-common-5.7.19-1.el7.x86_64    1/4 
+  正在安装    : mysql-community-libs-5.7.19-1.el7.x86_64      2/4 
+  正在安装    : mysql-community-client-5.7.19-1.el7.x86_64    3/4 
+  正在安装    : mysql-community-server-5.7.19-1.el7.x86_64    4/4 
+  验证中      : mysql-community-libs-5.7.19-1.el7.x86_64      1/4 
+  验证中      : mysql-community-common-5.7.19-1.el7.x86_64    2/4 
+  验证中      : mysql-community-client-5.7.19-1.el7.x86_64    3/4 
+  验证中      : mysql-community-server-5.7.19-1.el7.x86_64    4/4 
+
+已安装:
+  mysql-community-server.x86_64 0:5.7.19-1.el7                    
+
+作为依赖被安装:
+  mysql-community-client.x86_64 0:5.7.19-1.el7                    
+  mysql-community-common.x86_64 0:5.7.19-1.el7                    
+  mysql-community-libs.x86_64 0:5.7.19-1.el7                      
+
+完毕！
+启动服务
+$ service mysqld start
+Redirecting to /bin/systemctl start  mysqld.service
+$ service mysqld status
+Redirecting to /bin/systemctl status  mysqld.service
+● mysqld.service - MySQL Server
+   Loaded: loaded (/usr/lib/systemd/system/mysqld.service; enabled; vendor preset: disabled)
+   Active: active (running) since 日 2017-08-06 23:22:43 CST; 3min 19s ago
+     Docs: man:mysqld(8)
+           http://dev.mysql.com/doc/refman/en/using-systemd.html
+  Process: 19002 ExecStart=/usr/sbin/mysqld --daemonize --pid-file=/var/run/mysqld/mysqld.pid $MYSQLD_OPTS (code=exited, status=0/SUCCESS)
+  Process: 18869 ExecStartPre=/usr/bin/mysqld_pre_systemd (code=exited, status=0/SUCCESS)
+ Main PID: 19004 (mysqld)
+   CGroup: /system.slice/mysqld.service
+           └─19004 /usr/sbin/mysqld --daemonize --pid-file=/var...
+
+8月 06 23:22:25 bogon systemd[1]: Starting MySQL Server...
+8月 06 23:22:43 bogon systemd[1]: Started MySQL Server.
+$ systemctl|grep mysql
+  mysqld.service                                                                                             loaded active running   MySQL Server
 
