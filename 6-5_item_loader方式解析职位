@@ -1,0 +1,84 @@
+$ scrapy startproject lagou_spider
+New Scrapy project 'lagou_spider', using template directory '/usr/python/python3.6.2/lib/python3.6/site-packages/scrapy/templates/project', created in:
+    /home/soundwave/file/github/Python分布式爬虫打造搜索引擎Scrapy/第6章_通过CrawlSpider对招聘网站进行整站爬取(拉勾网实战)/lagou_spider
+
+You can start your first spider with:
+    cd lagou_spider
+    scrapy genspider example example.com
+
+$ cd lagou_spider/
+$ scrapy genspider -t crawl lagou www.lagou.com
+Created spider 'lagou' using template 'crawl' in module:
+  lagou_spider.spiders.lagou
+
+ModuleNotFoundError: No module named 'fake_useragent'
+$ sudo pip install fake_useragent
+$ sudo pip install pymysql
+$ sudo pip install redis
+$ sudo pip install elasticsearch_dsl
+$ sudo pip install selenium
+$ sudo pip install pillow
+$ sudo pip install requests
+
+$ scrapy shell https://www.lagou.com/jobs/1949617.html
+2017-08-20 22:51:20 [scrapy.utils.log] INFO: Scrapy 1.4.0 started (bot: lagou_spider)
+2017-08-20 22:51:20 [scrapy.utils.log] INFO: Overridden settings: {'AUTOTHROTTLE_ENABLED': True, 'BOT_NAME': 'lagou_spider', 'COOKIES_ENABLED': False, 'DOWNLOAD_DELAY': 10, 'DUPEFILTER_CLASS': 'scrapy.dupefilters.BaseDupeFilter', 'LOGSTATS_INTERVAL': 0, 'NEWSPIDER_MODULE': 'lagou_spider.spiders', 'SPIDER_MODULES': ['lagou_spider.spiders'], 'USER_AGENT': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:51.0) Gecko/20100101 Firefox/51.0'}
+2017-08-20 22:51:20 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.throttle.AutoThrottle']
+2017-08-20 22:51:20 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2017-08-20 22:51:20 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2017-08-20 22:51:20 [scrapy.middleware] INFO: Enabled item pipelines:
+[]
+2017-08-20 22:51:20 [scrapy.extensions.telnet] DEBUG: Telnet console listening on 127.0.0.1:6023
+2017-08-20 22:51:20 [scrapy.core.engine] INFO: Spider opened
+2017-08-20 22:51:20 [scrapy.core.engine] DEBUG: Crawled (200) <GET https://www.lagou.com/jobs/1949617.html> (referer: None)
+[s] Available Scrapy objects:
+[s]   scrapy     scrapy module (contains scrapy.Request, scrapy.Selector, etc)
+[s]   crawler    <scrapy.crawler.Crawler object at 0x7f4496139940>
+[s]   item       {}
+[s]   request    <GET https://www.lagou.com/jobs/1949617.html>
+[s]   response   <200 https://www.lagou.com/jobs/1949617.html>
+[s]   settings   <scrapy.settings.Settings object at 0x7f4485e65898>
+[s]   spider     <LagouSpider 'lagou' at 0x7f44859c5be0>
+[s] Useful shortcuts:
+[s]   fetch(url[, redirect=True]) Fetch URL and update local objects (by default, redirects are followed)
+[s]   fetch(req)                  Fetch a scrapy.Request and update local objects 
+[s]   shelp()           Shell help (print this help)
+[s]   view(response)    View response in a browser
+
+解析：
+>>> response.css(".job-name::attr(title)")
+[<Selector xpath="descendant-or-self::*[@class and contains(concat(' ', normalize-space(@class), ' '), ' job-name ')]/@title" data='Linux内核研发工程师'>]
+>>> response.css(".job-name::attr(title)").extract()
+['Linux内核研发工程师']
+
+>>> response.css(".job_request .salary").extract()
+['<span class="salary">23k以上 </span>']
+>>> response.css(".job_request .salary::text").extract()
+['23k以上 ']
+
+>>> response.xpath("//*[@class='job_request']/p/span[2]").extract()
+['<span>/北京 /</span>']
+>>> response.xpath("//*[@class='job_request']/p/span[2]/text()").extract()
+['/北京 /']
+
+>>> response.css(".position-label li::text").extract()
+['内核开发']

@@ -1,0 +1,59 @@
+### 1. Scrapy的概念
+
+Scrapy，Python开发的一个快速,高层次的屏幕抓取和web抓取框架，用于抓取web站点并从页面中提取结构化的数据。Scrapy用途广泛，可以用于数据挖掘、监测和自动化测试。
+Scrapy吸引人的地方在于它是一个框架，任何人都可以根据需求方便的修改。它也提供了多种类型爬虫的基类，如BaseSpider、sitemap爬虫等，最新版本又提供了web2.0爬虫的支持。
+
+### 2. scrapy的安装
+$ yum update -y
+$ pip3 install lxml
+Requirement already satisfied: lxml in /usr/python/Python3.6.2/lib/python3.6/site-packages
+
+$ sudo pip3 install scrapy
+$ ln -s /usr/python/Python3.6.2/bin/scrapy /usr/bin/scrapy
+Requirement already satisfied: scrapy in /usr/python/Python3.6.2/lib/python3.6/site-packages
+Requirement already satisfied: queuelib in /usr/python/Python3.6.2/lib/python3.6/site-packages (from scrapy)
+Requirement already satisfied: lxml in /usr/python/Python3.6.2/lib/python3.6/site-packages (from scrapy)
+Requirement already satisfied: Twisted>=13.1.0 in /usr/python/Python3.6.2/lib/python3.6/site-packages (from scrapy)
+Requirement already satisfied: w3lib>=1.17.0 in /usr/python/Python3.6.2/lib/python3.6/site-packages (from scrapy)
+Requirement already satisfied: cssselect>=0.9 in /usr/python/Python3.6.2/lib/python3.6/site-packages (from scrapy)
+Requirement already satisfied: pyOpenSSL in /usr/python/Python3.6.2/lib/python3.6/site-packages (from scrapy)
+Requirement already satisfied: service-identity in /usr/python/Python3.6.2/lib/python3.6/site-packages (from scrapy)
+Requirement already satisfied: six>=1.5.2 in /usr/python/Python3.6.2/lib/python3.6/site-packages (from scrapy)
+Requirement already satisfied: PyDispatcher>=2.0.5 in /usr/python/Python3.6.2/lib/python3.6/site-packages (from scrapy)
+Requirement already satisfied: parsel>=1.1 in /usr/python/Python3.6.2/lib/python3.6/site-packages (from scrapy)
+Requirement already satisfied: zope.interface>=4.0.2 in /usr/python/Python3.6.2/lib/python3.6/site-packages (from Twisted>=13.1.0->scrapy)
+Requirement already satisfied: constantly>=15.1 in /usr/python/Python3.6.2/lib/python3.6/site-packages (from Twisted>=13.1.0->scrapy)
+Requirement already satisfied: incremental>=16.10.1 in /usr/python/Python3.6.2/lib/python3.6/site-packages (from Twisted>=13.1.0->scrapy)
+Requirement already satisfied: Automat>=0.3.0 in /usr/python/Python3.6.2/lib/python3.6/site-packages (from Twisted>=13.1.0->scrapy)
+Requirement already satisfied: hyperlink>=17.1.1 in /usr/python/Python3.6.2/lib/python3.6/site-packages (from Twisted>=13.1.0->scrapy)
+Requirement already satisfied: cryptography>=1.9 in /usr/python/Python3.6.2/lib/python3.6/site-packages (from pyOpenSSL->scrapy)
+Requirement already satisfied: pyasn1 in /usr/python/Python3.6.2/lib/python3.6/site-packages (from service-identity->scrapy)
+Requirement already satisfied: attrs in /usr/python/Python3.6.2/lib/python3.6/site-packages (from service-identity->scrapy)
+Requirement already satisfied: pyasn1-modules in /usr/python/Python3.6.2/lib/python3.6/site-packages (from service-identity->scrapy)
+Requirement already satisfied: setuptools in /usr/python/Python3.6.2/lib/python3.6/site-packages (from zope.interface>=4.0.2->Twisted>=13.1.0->scrapy)
+Requirement already satisfied: cffi>=1.7 in /usr/python/Python3.6.2/lib/python3.6/site-packages (from cryptography>=1.9->pyOpenSSL->scrapy)
+Requirement already satisfied: idna>=2.1 in /usr/python/Python3.6.2/lib/python3.6/site-packages (from cryptography>=1.9->pyOpenSSL->scrapy)
+Requirement already satisfied: asn1crypto>=0.21.0 in /usr/python/Python3.6.2/lib/python3.6/site-packages (from cryptography>=1.9->pyOpenSSL->scrapy)
+Requirement already satisfied: pycparser in /usr/python/Python3.6.2/lib/python3.6/site-packages (from cffi>=1.7->cryptography>=1.9->pyOpenSSL->scrapy)
+
+$ scrapy -V
+Scrapy 1.4.0 - no active project
+
+Usage:
+  scrapy <command> [options] [args]
+
+Available commands:
+  bench         Run quick benchmark test
+  fetch         Fetch a URL using the Scrapy downloader
+  genspider     Generate new spider using pre-defined templates
+  runspider     Run a self-contained spider (without creating a project)
+  settings      Get settings values
+  shell         Interactive scraping console
+  startproject  Create new project
+  version       Print Scrapy version
+  view          Open URL in browser, as seen by Scrapy
+
+  [ more ]      More commands available when run from project directory
+
+Use "scrapy <command> -h" to see more info about a command
+

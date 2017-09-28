@@ -1,0 +1,13 @@
+$ wine putty.exe
+-->> putty
+>> yum install tree
+
+$ python main.py
+出现错误
+no module name _sqlite3
+解决：
+$ yum install sqlite-devel
+重新编译安装Python
+./configure
+make
+make instal
